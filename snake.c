@@ -15,6 +15,8 @@
 #define DELAY 80
 #define PILL_MAX 5
 
+//this is a test
+
 #define CELLCOUNT_X 40
 #define CELLCOUNT_Y 30
 #define CELL_W 24
