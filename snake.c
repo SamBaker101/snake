@@ -44,8 +44,6 @@ struct character{
     int x, y, direction, length;
 };
 
-struct character Player = {0, 0, 2, 1};
-
 /////////////////////////////////////////////////////////////////
 ///                        Functions                         ///
 ////////////////////////////////////////////////////////////////
@@ -105,11 +103,11 @@ void clearBoard(){
 
 //// Death ////
 
-void death(int *pillcount){
-    Player.x = 0;
-    Player.y = 0;
-    Player.length = 1;
-    Player.direction = 2;
+void death(struct character *Player, int *pillcount){
+    Player->x = 0;
+    Player->y = 0;
+    Player->length = 1;
+    Player->direction = 2;
     *pillcount = 0;
     
     clearBoard();
@@ -119,7 +117,7 @@ void death(int *pillcount){
 ////////////////////////////////////////////////////////////////
 //                   KEYS                                     //
 ////////////////////////////////////////////////////////////////
-void checkEvents(SDL_Window *window, int *done, int *pause){
+void checkEvents(SDL_Window *window, struct character *Player, int *done, int *pause){
 
     SDL_Event event;
 
@@ -149,23 +147,23 @@ void checkEvents(SDL_Window *window, int *done, int *pause){
 
                 // N=1, E=2, S=3, W=4
                 case SDLK_w:
-                    if (Player.direction != 3)
-                        Player.direction = 1;
+                    if (Player->direction != 3)
+                        Player->direction = 1;
                     break;
 
                 case SDLK_s:
-                    if (Player.direction != 1)
-                        Player.direction = 3;
+                    if (Player->direction != 1)
+                        Player->direction = 3;
                     break;
 
                 case SDLK_a:
-                    if (Player.direction != 2)
-                        Player.direction = 4;
+                    if (Player->direction != 2)
+                        Player->direction = 4;
                     break;
 
                 case SDLK_d:
-                    if (Player.direction != 4)
-                        Player.direction = 2;
+                    if (Player->direction != 4)
+                        Player->direction = 2;
                     break;
 
                 case SDLK_SPACE:
@@ -185,53 +183,53 @@ void checkEvents(SDL_Window *window, int *done, int *pause){
 ///                   Handle Movement                        ///
 ////////////////////////////////////////////////////////////////
 
-int moveChar(int *pillcount){
+int moveChar(struct character *Player, int *pillcount){
     int i, j;
 
-    if((Player.x == 0) && (Player.direction == 4))
-        death(pillcount);
-    else if((Player.y == 0) && (Player.direction == 1))
-        death(pillcount);
-    else if((Player.x + 1 == CELLCOUNT_X) && (Player.direction == 2))
-        death(pillcount);
-    else if((Player.y + 1 == CELLCOUNT_Y) && (Player.direction == 3))
-        death(pillcount);
+    if((Player->x == 0) && (Player->direction == 4))
+        death(Player, pillcount);
+    else if((Player->y == 0) && (Player->direction == 1))
+        death(Player, pillcount);
+    else if((Player->x + 1 == CELLCOUNT_X) && (Player->direction == 2))
+        death(Player, pillcount);
+    else if((Player->y + 1 == CELLCOUNT_Y) && (Player->direction == 3))
+        death(Player, pillcount);
     else{
-        switch (Player.direction){
+        switch (Player->direction){
             case 1:
-                Player.y = Player.y - 1;
+                Player->y = Player->y - 1;
                 break;
 
             case 2:
-                Player.x = Player.x + 1;
+                Player->x = Player->x + 1;
                 break;
 
             case 3:
-                Player.y = Player.y + 1;
+                Player->y = Player->y + 1;
                 break;
 
             case 4:
-                Player.x = Player.x - 1;
+                Player->x = Player->x - 1;
                 break;
         };
 
-        if (tilelist[Player.x][Player.y].snake_tail > 0)
-            death(pillcount);
+        if (tilelist[Player->x][Player->y].snake_tail > 0)
+            death(Player, pillcount);
         
         else{
-            tilelist[Player.x][Player.y].snake_tail = 1;
+            tilelist[Player->x][Player->y].snake_tail = 1;
 
-            if (tilelist[Player.x][Player.y].pill == 1){
-                tilelist[Player.x][Player.y].pill = 0;
+            if (tilelist[Player->x][Player->y].pill == 1){
+                tilelist[Player->x][Player->y].pill = 0;
                 *pillcount = *pillcount - 1;
-                Player.length++;
+                Player->length++;
             }
 
             for (i = 0; i < CELLCOUNT_X; i++){
                 for (j = 0; j < CELLCOUNT_Y; j++){
 
                     if (tilelist[i][j].snake_tail != 0){
-                        if (tilelist[i][j].snake_tail > Player.length)
+                        if (tilelist[i][j].snake_tail > Player->length)
                             tilelist[i][j].snake_tail = 0;
                         else
                             tilelist[i][j].snake_tail++;
@@ -327,13 +325,13 @@ void drawScreen(SDL_Renderer *renderer, int *pause){
 ///                        Menues                            ///
 ////////////////////////////////////////////////////////////////
 
-void pauseMenu(SDL_Renderer *renderer, SDL_Window *window, int *done, int *pause){
+void pauseMenu(SDL_Renderer *renderer, SDL_Window *window, struct character *Player, int *done, int *pause){
 
     while (*pause){
         if (*done)
             break;
         
-        checkEvents(window, done, pause);
+        checkEvents(window, Player, done, pause);
         drawScreen(renderer, pause);
         SDL_Delay(DELAY);
 
@@ -348,6 +346,8 @@ int main(int argc, char *argv[]) {
 
     SDL_Window *window;
     SDL_Renderer *renderer;
+
+    struct character Player = {0, 0, 2, 1};
 
     int done = 0, pause = 0;
     int i, j;
@@ -368,14 +368,14 @@ int main(int argc, char *argv[]) {
     while (!done){
         
         if (pause)
-            pauseMenu(renderer, window, &done, &pause);
+            pauseMenu(renderer, window, &Player, &done, &pause);
 
-        checkEvents(window, &done, &pause);
+        checkEvents(window, &Player, &done, &pause);
 
         if (pillcount <= 0)
             pillcount = createPill(&tilelist);
         
-        moveChar(&pillcount);
+        moveChar(&Player, &pillcount);
 
         drawScreen(renderer, &pause);
 
