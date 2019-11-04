@@ -1,0 +1,8 @@
+C:/code/snake/build/CMakeFiles/rebuild_cache.dir
+C:/code/snake/build/CMakeFiles/LibsModule.dir
+C:/code/snake/build/CMakeFiles/snake.dir
+C:/code/snake/build/CMakeFiles/install/local.dir
+C:/code/snake/build/CMakeFiles/install.dir
+C:/code/snake/build/CMakeFiles/edit_cache.dir
+C:/code/snake/build/CMakeFiles/list_install_components.dir
+C:/code/snake/build/CMakeFiles/install/strip.dir
