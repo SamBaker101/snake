@@ -173,9 +173,8 @@ void checkEvents(SDL_Window *window, struct character *Player, int *done, int *p
                         *pause = 0;
 
 
+            }
         }
-    }
-
     }   
 }
 
