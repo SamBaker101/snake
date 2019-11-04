@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/code/snake/snake.c
+SDL2/SDL.h
+-
+SDL2/SDL_TTF.h
+-
+stdio.h
+-
+stdlib.h
+-
+time.h
+-
+
