@@ -1,8 +1,8 @@
 # SNAKE
 ## Background
-Simple snake game created using c with SDL library
+Simple snake game created using C with SDL library
 
-Built as a learning excercise to improve comfort with:
+Built as a learning exercise to improve comfort with:
 - C Language
 - Basic SDL graphics rendering
 - SDL key tracking
